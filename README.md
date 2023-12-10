@@ -4,4 +4,8 @@ Welcome to my default upload space for the various programs created on my trek t
 
 Feel free to visit my [LinkedIn profile](www.linkedin.com/in/wawrzyn-skibinski)
 
-Or contact me onmy [email](waws1991@gmail.com)
+Or contact me on my [email address](waws1991@gmail.com)
+
+Thaks for visiting!
+
+(/)

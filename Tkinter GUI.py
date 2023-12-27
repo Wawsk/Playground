@@ -23,7 +23,7 @@ def button_click(number):
 def f_button_clear():
     display.delete(0, END)
 
-def f_button_backspace():
+def f_button_backspace():           #Bug - when backspace leaves a . next to the number, divide/calculations fail!
     text = display.get()
     if text:
         upd_text = text[:-1]
@@ -35,7 +35,7 @@ def f_button_addition():
     global g_num_1
     global choice
     choice = "add"
-    g_num_1 = int(num_1)
+    g_num_1 = float(num_1)
     display.delete(0, END)
 
 def f_button_subtract():
@@ -43,7 +43,7 @@ def f_button_subtract():
     global g_num_1
     global choice
     choice = "sub"
-    g_num_1 = int(num_1)
+    g_num_1 = float(num_1)
     display.delete(0, END)
 
 def f_button_divide():
@@ -51,7 +51,7 @@ def f_button_divide():
     global g_num_1
     global choice
     choice = "div"
-    g_num_1 = int(num_1)
+    g_num_1 = float(num_1)
     display.delete(0, END)
 
 def f_button_multiply():
@@ -59,7 +59,7 @@ def f_button_multiply():
     global g_num_1
     global choice
     choice = "mul"
-    g_num_1 = int(num_1)
+    g_num_1 = float(num_1)
     display.delete(0, END)
 
 
@@ -68,20 +68,25 @@ def f_button_equal():
     num_2 = display.get()
     display.delete(0, END)
     if choice == "add":
-        display.insert(0, g_num_1 + int(num_2))
+        display.insert(0, g_num_1 + float(num_2))
     elif choice == "sub":
-        display.insert(0, g_num_1 - int(num_2))
+        display.insert(0, g_num_1 - float(num_2))
     elif choice == "div":
-        if (g_num_1 / int(num_2)).is_integer():
-            display.insert(0, int(g_num_1 / int(num_2)))
-        else:
-            display.insert(0, round(g_num_1 / int(num_2), 2))
+        try:
+            if (g_num_1 / float(num_2)).is_integer():
+                display.insert(0, float(g_num_1 / float(num_2)))
+            else:
+                display.insert(0, round(g_num_1 / float(num_2), 2))
+        except ZeroDivisionError:
+            text = "ZeroDivisionError"
+            display.delete(1, END)
+            display.insert(END, text)
     elif choice == "mul":
-        display.insert(0, g_num_1 * int(num_2))
+        display.insert(0, g_num_1 * float(num_2))
 
 # Button config
 # Display window
-display = Entry(root, width=15, borderwidth=4)
+display = Entry(root, width=20, borderwidth=4, font=sml_font)
 
 button_1 = Button(root, text="1", padx=20, pady=10, borderwidth=3, bg="gray85",command=lambda: button_click(1))
 button_2 = Button(root, text="2", padx=20, pady=10, borderwidth=3, bg="gray85",command=lambda: button_click(2))
@@ -123,3 +128,8 @@ button_multiply.grid(row=4,column=3,padx=3,pady=3)
 
 # End mainloop
 root.mainloop()
+
+
+# Fix bugs
+# Add dot button
+# Include dividing by decimal numbers

@@ -23,12 +23,22 @@ def button_click(number):
 def f_button_clear():
     display.delete(0, END)
 
-def f_button_backspace():           #Bug - when backspace leaves a . next to the number, divide/calculations fail!
+def f_button_backspace():
     text = display.get()
     if text:
-        upd_text = text[:-1]
-        display.delete(0, END)
-        display.insert(0, upd_text)
+        if len(text) >= 2 and text[-2] == ".":
+            upd_text = text[:-2]
+            display.delete(0, END)
+            display.insert(0, upd_text)
+        else:
+            upd_text = text[:-1]
+            display.delete(0, END)
+            display.insert(0, upd_text)
+
+def f_button_dot():
+    current = display.get()
+    if "." not in current:
+        display.insert(END, ".")
     
 def f_button_addition():
     num_1 = display.get()
@@ -98,6 +108,7 @@ button_7 = Button(root, text="7", padx=20, pady=10, borderwidth=3, bg="gray85",c
 button_8 = Button(root, text="8", padx=20, pady=10, borderwidth=3, bg="gray85",command=lambda: button_click(8))
 button_9 = Button(root, text="9", padx=20, pady=10, borderwidth=3, bg="gray85",command=lambda: button_click(9))
 button_0 = Button(root, text="0", padx=20, pady=10, borderwidth=3, bg="gray85",command=lambda: button_click(0))
+button_dot = Button(root, text=".", padx=20, pady=10, borderwidth=3, bg="gray85",command=f_button_dot)
 button_backspace = Button(root, text="⌫", padx=9, pady=9, borderwidth=3, bg="gray85", command=f_button_backspace)
 button_addition = Button(root, text="+", padx=19, pady=10, borderwidth=3, bg="gray85",command=f_button_addition)
 button_subtract = Button(root, text="-", padx=22, pady=10, borderwidth=3, bg="gray85",command=f_button_subtract)
@@ -125,11 +136,7 @@ button_clear.grid(row=4,column=0,columnspan=1,padx=3,pady=3)
 button_0.grid(row=4,column=1,padx=3,pady=3)
 button_equal.grid(row=4,column=2,padx=3,pady=3)
 button_multiply.grid(row=4,column=3,padx=3,pady=3)
+button_dot.grid(row=4,column=4,padx=3,pady=3)
 
 # End mainloop
 root.mainloop()
-
-
-# Fix bugs
-# Add dot button
-# Include dividing by decimal numbers

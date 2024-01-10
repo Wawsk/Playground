@@ -126,3 +126,12 @@ Write it down to continue.
 
 
 
+""" To-Do 
+
+Change "Search" option to what's in option 1 code.
+Let Browse show all dictionaries to display all the inventory
+Finish inventory
+Add being able to add to a basket
+
+
+"""

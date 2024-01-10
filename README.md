@@ -6,4 +6,4 @@ Feel free to visit my [LinkedIn profile](www.linkedin.com/in/wawrzyn-skibinski)
 
 Or contact me on my [email address](mailto:waws1991@gmail.com?subject=[GitHub])
 
-Thaks for visiting!  </>
+Thanks for visiting!  </>

@@ -89,7 +89,7 @@ def f_button_equal():
     elif choice == "div":
         try:
             if (g_num_1 / float(num_2)).is_integer():
-                result = float(g_num_1 / float(num_2))
+                result = float(g_num_1 / float(num_2)) 
                 result = int(result) if result % 1 == 0 else result
                 display.insert(0, result)
             else:

@@ -73,6 +73,14 @@ def f_button_multiply():
     g_num_1 = float(num_1)
     display.delete(0, END)
 
+def f_button_percent():
+    num_2 = display.get()
+    num_2 = float(num_2)
+    global g_num_1
+    display.delete(0, END)
+    result = g_num_1 * (num_2 / 100)
+    result = int(result) if result % 1 == 0 else result
+    display.insert(0, result)
 
 # Equal sign decides which calculation to perform
 def f_button_equal():
@@ -89,7 +97,7 @@ def f_button_equal():
     elif choice == "div":
         try:
             if (g_num_1 / float(num_2)).is_integer():
-                result = float(g_num_1 / float(num_2)) 
+                result = float(g_num_1 / float(num_2))
                 result = int(result) if result % 1 == 0 else result
                 display.insert(0, result)
             else:
@@ -105,20 +113,12 @@ def f_button_equal():
         result = int(result) if result % 1 == 0 else result
         display.insert(0, result)
 
-def f_button_percent():
-    num_2 = display.get()
-    num_2 = float(num_2)
-    global g_num_1
-    display.delete(0, END)
-    result = g_num_1 * (num_2 / 100)
-    result = int(result) if result % 1 == 0 else result
-    display.insert(0, result)
 
 # Button config
 # Display window
 display = Entry(root, width=20, borderwidth=4, font=sml_font)
 
-button_1 = Button(root, text="1", padx=20, pady=10, borderwidth=3, bg="gray85",command=lambda: button_click(1))
+button_1=Button(root,text="1",padx=20,pady=10,borderwidth=3,bg="gray85",command=lambda:button_click(1))
 button_2 = Button(root, text="2", padx=20, pady=10, borderwidth=3, bg="gray85",command=lambda: button_click(2))
 button_3 = Button(root, text="3", padx=20, pady=10, borderwidth=3, bg="gray85",command=lambda: button_click(3))
 button_4 = Button(root, text="4", padx=20, pady=10, borderwidth=3, bg="gray85",command=lambda: button_click(4))
@@ -132,13 +132,13 @@ button_dot = Button(root, text=".", padx=23, pady=10, borderwidth=3, bg="gray85"
 button_backspace = Button(root, text="⌫", padx=9, pady=9, borderwidth=3, bg="gray85", command=f_button_backspace)
 button_addition = Button(root, text="+", padx=19, pady=10, borderwidth=3, bg="gray85",command=f_button_addition)
 button_subtract = Button(root, text="-", padx=22, pady=10, borderwidth=3, bg="gray85",command=f_button_subtract)
-button_divide = Button(root, text="/", padx=22, pady=10, borderwidth=3, bg="gray85",command=f_button_divide)
-button_multiply = Button(root, text="*", padx=21, pady=10, borderwidth=3, bg="gray85",command=f_button_multiply)
+button_divide = Button(root, text="/", padx=23, pady=10, borderwidth=3, bg="gray85",command=f_button_divide)
+button_multiply = Button(root, text="x", padx=20, pady=10, borderwidth=3, bg="gray85",command=f_button_multiply)
 button_equal = Button(root, text="=", padx=20, pady=10, borderwidth=3, bg="gray85",command=f_button_equal)
 button_clear = Button(root, text="Clear", padx=5, pady=15, borderwidth=3, bg="gray85", font=sml_font, command=f_button_clear)
 button_percent = Button(root, text="%", padx=15, pady=10, borderwidth=3, bg="gray85",command=f_button_percent)
 
-# Widgets lyaout
+# Widget lyaout
 # Row 0
 display.grid(row=0, column=0, columnspan=3, padx=9, pady=15)
 button_backspace.grid(row=0, column=3)
@@ -159,14 +159,17 @@ button_3.grid(row=3,column=2,padx=3,pady=3)
 button_divide.grid(row=3,column=3,padx=3,pady=3)
 button_percent.grid(row=3, column=4, padx=3,pady=3)
 # Row 4
-button_clear.grid(row=4,column=0,columnspan=1,padx=3,pady=3)
+button_clear.grid(row=0,column=4,padx=3,pady=3)
 button_0.grid(row=4,column=1,padx=3,pady=3)
 button_equal.grid(row=4,column=2,padx=3,pady=3)
 button_multiply.grid(row=4,column=3,padx=3,pady=3)
-button_dot.grid(row=4,column=4,padx=3,pady=3)
+button_dot.grid(row=4,column=0,padx=3,pady=3)
 
 # End mainloop
 root.mainloop()
 
 
 # If "." is not preceded by a number, add a 0 at index[0]
+
+# C - clears what's on display
+# CE - Clears the function

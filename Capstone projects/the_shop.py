@@ -1,114 +1,137 @@
+
+from inventory import weapons
 import time
 
-# Dictionary containing inventory in The Shop
-inventory = {
-    "Swords": {"Mithril": 325, 
-               "Steel": 85, 
-               "Iron": 38, 
-               "Wooden": 12
-},
-    "Bows": {"Stick": 25, 
-             "Oak": 90, 
-             "Elvish": 130, 
-             "World Tree": 2020
-},
-}
-# Defining functions:
-# Converts inventory items value from copper coins to silver and gold.
-def coin_conversion():
-    for key, value in items.items():
-        if value > 100:
-            value /= 100
-            print(f"\n{key} {sub_choice}, {value} Gold coins")
-        elif 10 < value < 100:
-            value /= 10
-            print(f"\n{key} {sub_choice}, {value} Silver coins")
+# Defining classes:
+class ItemSearch:
+    def __init__(self, inventory):
+        self.inventory = inventory
+
+    def browse_items(self, category):
+        items = self.inventory.get(category, [])
+        if not items:
+            print("We don't have that in stock. Try again?")
+            return
+
+        print(f"Browsing items in {category}..."
+              f"\n{category} made out of what material?\n{TILDE}\n")
+        item_choice = input(">>> ")
+
+        if any(item_choice == item["name"] for item in items):
+            selected_item = next(item for item in items if item["name"] == item_choice)
+            self.display_item_stats(selected_item)
+            time.sleep(2)
         else:
-            print(f"\n{key} {sub_choice}, {value} Copper coins")
+            print("Item not found in the inventory.")
+
+    def display_item_stats(self, item):
+        print("\nItem Stats:")
+        for key, value in item.items():
+            if key == "cost":
+                value = coin_conversion(item)
+                continue
+            print(f"{key.capitalize()}: {value}")
+
+# Reuse the ItemSearch class
+searching = ItemSearch(weapons)
+
+# Defining functions:
+def coin_conversion(item):
+    # Converts item value to coins
+    value = item["cost"]
+    gold = value // 100
+    silver = (value % 100) // 10
+    copper = value % 10
+
+    result = []
+    if gold > 0:
+        result.append(f"{gold} Gold")
+    if silver > 0:
+        result.append(f"{silver} Silver")
+    if copper > 0:
+        result.append(f"{copper} Copper")
+    
+    print("Cost:", ", ".join(result))
+
+def coin_rev_conversion ():
+    # Converts coins into total value
+    gold = int(input("Enter Gold value:\n>>> "))
+    silver = int(input("Enter Silver value:\n>>> "))
+    copper = int(input("Enter Copper value:\n>>> "))
+    cost = (gold * 100 + silver * 10 + copper)
 
 
 # Texts:
+# Separator
+TILDE = '~ ' * 35
+
 # Welcome message
-MAIN_MENU = f"""{50 * "~ "}
+MAIN_MENU = f"""{TILDE}
 Welcome to The Shop!
 
-We are supplying all manner of adventuring goods, please browse at your leisure. 
-You can use this enchanted tome to perform a variety of functions. Just write down
-a number or one of the following options and the tome will take you to the next page."""
+  We are supplying all manner of adventuring goods, please browse
+at your leisure. You can use this enchanted tome to perform a
+variety of functions. Just write down a number or one of the
+following options and the tome will take you to the relevant page."""
 
 # Interaction with the global while loop
-MAIN_MENU_OPTIONS ="""
-    1. Search (Searches categories, not individual items)
-    2. Browse
-    3. Basket WIP
-    4. Requests WIP
-    5. Information WIP"""
+MAIN_MENU_OPTIONS =f"""
+  1. Inventory (View our stock)
+  2. Search (Search for a specific item)
+  3. Basket WIP
+  4. Requests WIP
+  5. Information WIP
+  6. Wallet / Conversion WIP
+ {TILDE}"""
 
 # Repeating browsing message
 BROWSING = "\nHere is what we have for sale...\n"
-
+SEARCH_SUB = f"""\nWhat type of an item are you looking for?
+Select one of the categories:
+  - Swords
+  - Bows
+  - Axes
+or
+  - Exit to go back to the previous page
+{TILDE}"""
 
 
 # Main menu while loop
 print(MAIN_MENU)
 while True:
     print(MAIN_MENU_OPTIONS)
-    time.sleep(1)
-    menu_choice = input("\n\t> ").lower()
-    time.sleep(1)
+    menu_choice = input(">>> ").lower()
 
     # Allows searching specific items
-    if menu_choice == "1" or menu_choice == "search":
-        print("\nWhat are you looking for?\n  -Swords\n  -Bows\n")
-        sub_choice = input("> ").capitalize()
-        time.sleep(1)
-        if sub_choice in inventory:
+    while menu_choice == "1" or menu_choice == "inventory":
+        print(SEARCH_SUB)
+        sub_choice = input(">>> ").capitalize()
+        
+        if sub_choice == "Exit":
+            break
+        elif sub_choice not in weapons:
+            print("We don't sell that... Select one of the provided options")
+        elif sub_choice in weapons:
+            category_name = sub_choice
             print("\nWe offer:\n")
+            for item in weapons[sub_choice]:
+                print(f"- {item['name']} {sub_choice}")
+            print("\n", TILDE)
             time.sleep(1)
-            for item in inventory[sub_choice].keys():
-                print(f"- {item} Swords")
-        elif sub_choice not in inventory:
-            print("Not in the inventory")
-            time.sleep(1)
-
-
 
 
 
     # Allows browsing the inventory dictionary
-    elif menu_choice == "2" or menu_choice == "browse":
-        sub_choice = input("""\nWhat item are you looking for?
-                            
-We offer a range of Swords, Bows etc...
-Write it down to continue.
-                           
-    > """).capitalize()
-        time.sleep(2)
+    while menu_choice == "2" or menu_choice == "search":
+        sub_choice = input(f"{SEARCH_SUB} \n>>> ").capitalize()
         while True:
-            if "Sword" in sub_choice:
-                items = inventory["Swords"]
-                print(BROWSING)
-                coin_conversion()
-                time.sleep(1)
-                item_choice = input("\nWrite down what you would like to add:\n> ").capitalize()
-                if item_choice in items:
-                    print("yay") # This is where adding a item to basket goes.
+            if sub_choice == "Exit":
                 break
-            elif "Bow" in sub_choice:
-                items = inventory["Bows"]
-                print(BROWSING)
-                coin_conversion()
-                time.sleep(1)
-                item_choice = input("\nWrite down what you would like to add:\n> ").capitalize()
-                if item_choice in items:
-                    print("yay") # This is where adding a item to basket goes.
+            elif sub_choice in weapons:
+                searching.browse_items("Swords")
+                print("\n", TILDE)
                 break
-            else:
-                print("We don't have that in stock, try again...")
-                sub_choice = input("""\nWhat item are you looking for?
-        Write it down to continue or write exit to go back.
-        > """)
-
+        break
 
 
 

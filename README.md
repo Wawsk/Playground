@@ -1,6 +1,6 @@
 </>  Playground
 
-Welcome to my default upload space for the various programs created on my trek to becoming a developer.
+Welcome to my upload space for the various programs created on my trek to becoming a developer.
 
 Feel free to visit my [LinkedIn profile](www.linkedin.com/in/wawrzyn-skibinski)
 

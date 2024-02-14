@@ -1,0 +1,32 @@
+User Overview
+Total users: 4
+Total tasks: 6
+
+User: Waw
+Total tasks assigned: 3
+Percentage of total tasks: 50.00%
+Percentage completed: 0.00%
+Percentage to be completed: 100.00%
+Percentage overdue: 33.33%
+
+User: Shan
+Total tasks assigned: 2
+Percentage of total tasks: 33.33%
+Percentage completed: 50.00%
+Percentage to be completed: 50.00%
+Percentage overdue: 0.00%
+
+User: John
+Total tasks assigned: 1
+Percentage of total tasks: 16.67%
+Percentage completed: 0.00%
+Percentage to be completed: 100.00%
+Percentage overdue: 100.00%
+
+User: dad
+Total tasks assigned: 1
+Percentage of total tasks: 16.67%
+Percentage completed: 0.00%
+Percentage to be completed: 100.00%
+Percentage overdue: 0.00%
+

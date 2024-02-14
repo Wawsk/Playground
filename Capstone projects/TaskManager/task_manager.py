@@ -1,16 +1,14 @@
+"""This is the main program for task_manager.
+Displaying the menu and handling menu options."""
 
-from functions import *
-
-def main_menu():
-    print("Welcome to the Task Manager!")
-    print("Select an option:")
-    print("r - Register a user")
-    print("a - Add a new task")
-    print("va - View all tasks")
-    print("vm - View my tasks")
-    print("gr - Generate reports")
-    print("ds - Display statistics")
-    print("q - Quit")
+from functions import (
+    main_menu,
+    reg_user,
+    add_task,
+    view_all,
+    view_mine,
+    generate_reports
+)
 
 while True:
     main_menu()

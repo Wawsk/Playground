@@ -1,17 +1,49 @@
+import os
 import datetime
 
+def main_menu():
+    """sumary_line
+
+Keyword arguments:
+argument -- description
+Return: return_description
+"""
+    os.system('cls')
+    print("Welcome to the Task Manager!")
+    print("Select an option:")
+    print("r - Register a user")
+    print("a - Add a new task")
+    print("va - View all tasks")
+    print("vm - View my tasks")
+    print("gr - Generate reports")
+    print("ds - Display statistics")
+    print("q - Quit")
+
 def reg_user():
+    """Registers a new user.
+
+    Prompts the user to enter a username and checks if the username is
+    already taken. If not taken, creates a new user within 'users.txt' file.
+
+    Return: None
+    """
+
     while True:
+        # Prompt the user to enter a username
         username = input("Enter a username: ")
 
+        # Check if the username is already taken
         if is_username_taken(username):
             print(f"Error: the username '{username}' is already taken.")
             continue
 
+        # Append the username to the 'users.txt' file
         with open('users.txt', 'a', encoding='utf-8') as file:
             file.write(f"{username}\n")
+        
+        # Print a success message
         print(f"User '{username}' has been registered successfully!")
-        break
+        break  # Exit the loop once registration is successful
 
 
 def is_username_taken(username):
@@ -64,6 +96,8 @@ def view_all():
             header, value = line.split(": ")
             print(f"{header:<25} {value}")
         print("_" * 50)  # Long line between tasks
+
+        #add a way to exit viewing the result to accomodate os - cls
     
 
 

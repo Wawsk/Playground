@@ -1,4 +1,4 @@
-"""This is the main program for task_manager.
+"""Main program for task_manager.
 Displaying the menu and handling menu options."""
 
 from functions import (
@@ -7,24 +7,19 @@ from functions import (
     add_task,
     view_all,
     view_mine,
-    generate_reports
+    generate_reports,
+    display_statistics
 )
 
 while True:
     main_menu()
     user_input = input("Enter your selection: ").lower()
-    if user_input == 'r':
-        reg_user()
-    elif user_input == 'a':
-        add_task()
-    elif user_input == 'va':
-        view_all()
-    elif user_input == 'vm':
-        view_mine()
-    elif user_input == 'gr':
-        generate_reports()
-    # elif user_input == 'ds':
-    #     display_statistics()
+    options = {
+        'r': reg_user, 'a': add_task, 'va': view_all,
+        'vm': view_mine, 'gr': generate_reports, 'ds': display_statistics
+        }
+    if user_input in options:
+        options[user_input]()
     elif user_input == 'e':
         break
     else:

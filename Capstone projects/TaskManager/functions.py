@@ -2,13 +2,10 @@ import os
 import datetime
 
 def main_menu():
-    """sumary_line
-
-Keyword arguments:
-argument -- description
-Return: return_description
+    """
 """
     os.system('cls')
+    print("-" * 50)
     print("Welcome to the Task Manager!")
     print("Select an option:")
     print("r - Register a user")
@@ -17,7 +14,9 @@ Return: return_description
     print("vm - View my tasks")
     print("gr - Generate reports")
     print("ds - Display statistics")
-    print("q - Quit")
+    print("e - exit\n")
+    print("Enter -1 at any time to cancel current process")
+    print("-" * 50)
 
 def reg_user():
     """Registers a new user.
@@ -32,8 +31,12 @@ def reg_user():
         # Prompt the user to enter a username
         username = input("Enter a username: ")
 
+        # Check if the user wants to cancel registration
+        if username == '-1':
+            return
+
         # Check if the username is already taken
-        if is_username_taken(username):
+        elif is_username_taken(username):
             print(f"Error: the username '{username}' is already taken.")
             continue
 
@@ -58,18 +61,104 @@ def is_username_taken(username):
 
 
 def add_task():
+    """Creates a new task.
+
+    Prompts the user to enter a task details and writes them to tasks.txt file
+    Error handling for no user in
+
+    """
     with open("tasks.txt", "a", encoding='utf-8') as file:
         file.write("\n")  # Add empty line to separate tasks
-        task_number = get_next_task_number()  # Get the next task number
-        file.write(f"Task number: {task_number}\n")
-        file.write(f"Task name: {input('Task name: ')}\n")
-        file.write(f"Assigned to: {input('Assigned to: ')}\n")
-        file.write(f"Date assigned: {input('Date assigned (DD-MM-YYYY): ')}\n")
-        file.write(f"Due date: {input('Due date (DD-MM-YYYY): ')}\n")
-        file.write(f"Task Complete? [Yes/No]: {input('Task Complete? [Yes/No]: ')}\n")
-        file.write(f"Task description: {input('Task description: ')}\n")
+
+        while True:
+            user_input = input('Task name: ')
+            if user_input == '-1':
+                print("Task creation cancelled.")
+                return
+            else:
+                if user_input:
+                    file.write(f"Task name: {user_input}\n")
+                    break
+                else:
+                    print("Error: Task name cannot be empty.")
+
+        while True:
+            user_input = input('Assigned to: ').strip()
+            if user_input == '-1':
+                print("Task creation cancelled.")
+                return
+            if is_username_taken(user_input):
+                file.write(f"Assigned to: {user_input}\n")
+                break
+            else:
+                print("Error: User does not exist. Please enter an existing user.")
+
+        while True:
+            date_format_error = False
+            user_input = input('Date assigned (DD-MM-YYYY): ')
+            if user_input == '-1':
+                print("Task creation cancelled.")
+                return
+            if user_input:
+                try:
+                    datetime.datetime.strptime(user_input, "%d-%m-%Y")
+                    file.write(f"Date assigned: {user_input}\n")
+                    break
+                except ValueError:
+                    print("Error: Invalid date format. Please enter date in DD-MM-YYYY format.")
+                    date_format_error = True
+            if not date_format_error:
+                print("You entered an invalid date format, please enter a new date assigned.")
+
+        while True:
+            date_format_error = False
+            user_input = input('Due date (DD-MM-YYYY): ')
+            if user_input == '-1':
+                print("Task creation cancelled.")
+                return
+            if user_input:
+                try:
+                    datetime.datetime.strptime(user_input, "%d-%m-%Y")
+                    file.write(f"Due date: {user_input}\n")
+                    break
+                except ValueError:
+                    print("Error: Invalid date format. Please enter date in DD-MM-YYYY format.")
+                    date_format_error = True
+            if not date_format_error:
+                print("You entered an invalid date format, please enter a new due date.")
+
+        while True:
+            user_input = input('Task Complete? [Yes/No]: ').strip().lower()
+            if user_input == 'yes' or user_input == 'no':
+                file.write(f"Task Complete? [Yes/No]: {user_input}\n")
+                break
+            elif user_input == '-1':
+                print("Task creation cancelled.")
+                return
+            else:
+                print("Error: Please enter 'Yes' or 'No'.")
+
+        while True:
+            user_input = input('Task description: ')
+            if user_input == '-1':
+                print("Task creation cancelled.")
+                return
+            else:
+                if user_input:
+                    file.write(f"Task description: {user_input}\n")
+                    break
+                else:
+                    print("Error: Task description cannot be empty.")
+
 
 def get_next_task_number():
+    """Support function.
+
+    Checks tasks.txt for number of tasks and assigns
+    a number to each task
+
+    Return: None
+    """
     try:
         with open("tasks.txt", "r", encoding='utf-8') as file:
             lines = file.readlines()
@@ -86,19 +175,27 @@ def get_next_task_number():
 
 
 def view_all():
+    task_number = 1
     with open("tasks.txt", "r", encoding='utf-8') as file:
         tasks = file.read().strip().split('\n\n')  # Split tasks by double newline
 
-    # Print each task with tabulated values for each header
-    for task in tasks:
-        lines = task.split('\n')
-        for line in lines:
-            header, value = line.split(": ")
-            print(f"{header:<25} {value}")
-        print("_" * 50)  # Long line between tasks
+    while True:
+        print("\nView all tasks:")
+        for task in tasks:
+            print(f"\nTask {task_number}:")
+            for line in task.split('\n'):
+                try:
+                    header, value = line.split(": ")
+                    print(f"{header:<25} {value}")
+                except ValueError:
+                    print(f"Missing parameter: {line}")
+            print("_" * 50)  # Long line between tasks
+            task_number += 1
 
-        #add a way to exit viewing the result to accomodate os - cls
-    
+        # Ask the user to go back or continue
+        choice = input("\nEnter -1 to go back to the previous menu: ")
+        if choice == "-1":
+            break
 
 
 def view_mine():
@@ -106,77 +203,80 @@ def view_mine():
     if not is_username_taken(username):
         print(f"Error: the username '{username}' does not exist.")
         return
+    os.system('cls')
 
-    with open("tasks.txt", "r", encoding='utf-8') as file:
-        tasks = file.read().strip().split('\n\n')  # Split tasks by double newline
-
-    # Display tasks assigned to the current user
-    for idx, task in enumerate(tasks, start=1):
-        if f"Assigned to: {username}" in task:
-            print(f"\nTask {idx}:")
-            print(task)
-
-    # Allow the user to select a task or return to main menu
     while True:
-        task_choice = input("Enter the number of the task to select, or enter '-1' to return to the main menu: ")
-        if task_choice == '-1':
-            break
-        elif not task_choice.isdigit() or int(task_choice) < 1 or int(task_choice) > len(tasks):
-            print("Invalid input. Please enter a valid task number.")
-        else:
-            task_idx = int(task_choice) - 1
-            selected_task = tasks[task_idx]
-            print(f"\nSelected Task {task_choice}:")
-            print(selected_task)
+        with open("tasks.txt", "r", encoding='utf-8') as file:
+            tasks = file.read().strip().split('\n\n')  # Split tasks by double newline
 
-            # Provide options to mark the task as complete or edit the task
-            task_complete = [line.split(": ")[1] for line in selected_task.split("\n") if line.startswith("Task Complete?")]
-            if task_complete and task_complete[0].lower() == "no":
-                action = input("Choose an action (mark/ edit): ").lower()
-                if action == "mark":
-                    tasks[task_idx] = selected_task.replace("No", "Yes", 1)
-                    with open("tasks.txt", "w", encoding='utf-8') as file:
-                        file.write('\n\n'.join(tasks))
-                    print("Task marked as complete.")
-                elif action == "edit":
-                    edit_task(selected_task)
-                else:
-                    print("Invalid action.")
-            else:
-                print("Task is already completed.")
+        # Display task names assigned to the current user
+        print("Enter -1 at any time to cancel current process")
+        print("-" * 50)
+        print(f"Tasks belonging to {username}:\n")
+        task_numbers = []
+        for idx, task in enumerate(tasks, start=1):
+            if f"Assigned to: {username}" in task:
+                task_numbers.append(idx)
+                print(f"Task {idx}: {get_task_name(task)}")
+
+        # Allow the user to select a task or go back
+        choice = input("Enter the number of the task to select and edit: ")
+        if choice.isdigit() and int(choice) in task_numbers:
+            task_idx = int(choice) - 1
+            selected_task = tasks[task_idx]
+            display_task_details(selected_task)
+            edit_choice = input("Do you want to edit this task? (yes/no): ").lower()
+            if edit_choice == 'yes':
+                edit_task(selected_task)
+            os.system('cls')  # Clear screen for a tidy interface when a task is selected
+        elif choice == '-1':
+            break
+        else:
+            print("Invalid input. Please enter a valid task number or 'back' to return to the main menu.")
+
+def get_task_name(task):
+    # Extract and return the task name
+    lines = task.split("\n")
+    for line in lines:
+        if line.startswith("Task name"):
+            return line.split(": ")[1]
+    return ""
+
+def display_task_details(task):
+    # Display all task details with numbers on the left
+    lines = task.split("\n")
+    for idx, line in enumerate(lines, start=1):
+        print(f"{idx}. {line}")
 
 def edit_task(selected_task):
-    # Load tasks from file
-    with open("tasks.txt", "r", encoding='utf-8') as file:
-        tasks = file.read().strip().split('\n\n')  # Split tasks by double newline
-
     # Extract the task details
-    lines = selected_task.split("\n")
     task_info = {}
+    lines = selected_task.split("\n")
     for line in lines:
         header, value = line.split(": ")
         task_info[header] = value
 
-    # Allow the user to edit the assigned user or the due date
+    # Allow the user to edit the task
     print("Editing Task:")
-    print(selected_task)
     while True:
-        edit_choice = input("Enter the field to edit (assigned/due), or enter '-1' to return to task selection: ").lower()
+        edit_choice = input("Enter the number of the field to edit, or enter '-1' to return to task selection: ")
         if edit_choice == '-1':
+            print("Returning to task selection.")
             break
-        elif edit_choice == 'assigned':
-            new_assigned_to = input("Enter new assigned to: ")
-            task_info['Assigned to'] = new_assigned_to
-            print("Assigned to updated.")
-        elif edit_choice == 'due':
-            new_due_date = input("Enter new due date (DD-MM-YYYY): ")
-            task_info['Due date'] = new_due_date
-            print("Due date updated.")
+        elif edit_choice.isdigit() and int(edit_choice) in range(1, len(lines) + 1):
+            field_number = int(edit_choice) - 1
+            header, _ = lines[field_number].split(": ", 1)
+            new_value = input(f"Enter new value for {header}: ")
+            task_info[header] = new_value
+            print(f"{header} updated.")
         else:
-            print("Invalid choice. Please enter 'assigned' or 'due'.")
+            print("Invalid input. Please enter a valid field number.")
 
     # Update the task in the tasks list and write it back to the file
     updated_task = "\n".join([f"{header}: {value}" for header, value in task_info.items()])
+    tasks = []
+    with open("tasks.txt", "r", encoding='utf-8') as file:
+        tasks = file.read().strip().split('\n\n')  # Split tasks by double newline
     tasks[tasks.index(selected_task)] = updated_task
     with open("tasks.txt", "w", encoding='utf-8') as file:
         file.write('\n\n'.join(tasks))

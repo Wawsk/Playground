@@ -22,5 +22,5 @@ while True:
         options[user_input]()
     elif user_input == 'e':
         break
-    else:
+    else: 
         print("Invalid selection. Please try again.")

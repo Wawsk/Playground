@@ -1,3 +1,4 @@
+# inventory.py
 weapons = {
     "Swords": [
         {"name":"Mithril", "damage":20, "durability":240, "cost":1025},
@@ -17,4 +18,3 @@ weapons = {
         {"name":"Flint", "damage":12, "durability":20, "cost":48},
     ]
 }
-

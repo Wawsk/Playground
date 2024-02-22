@@ -1,123 +1,51 @@
-
-from inventory import weapons
+# the_shop.py
+import os
 import time
-
-# Defining classes:
-class ItemSearch:
-    def __init__(self, inventory):
-        self.inventory = inventory
-
-    def browse_items(self, category):
-        items = self.inventory.get(category, [])
-        if not items:
-            print("We don't have that in stock. Try again?")
-            return
-
-        print(f"Browsing items in {category}..."
-              f"\n{category} made out of what material?\n{TILDE}\n")
-        item_choice = input(">>> ")
-
-        if any(item_choice == item["name"] for item in items):
-            selected_item = next(item for item in items if item["name"] == item_choice)
-            self.display_item_stats(selected_item)
-            time.sleep(2)
-        else:
-            print("Item not found in the inventory.")
-
-    def display_item_stats(self, item):
-        print("\nItem Stats:")
-        for key, value in item.items():
-            if key == "cost":
-                value = coin_conversion(item)
-                continue
-            print(f"{key.capitalize()}: {value}")
-
-# Reuse the ItemSearch class
-searching = ItemSearch(weapons)
-
-# Defining functions:
-def coin_conversion(item):
-    # Converts item value to coins
-    value = item["cost"]
-    gold = value // 100
-    silver = (value % 100) // 10
-    copper = value % 10
-
-    result = []
-    if gold > 0:
-        result.append(f"{gold} Gold")
-    if silver > 0:
-        result.append(f"{silver} Silver")
-    if copper > 0:
-        result.append(f"{copper} Copper")
-    
-    print("Cost:", ", ".join(result))
-
-def coin_rev_conversion ():
-    # Converts coins into total value
-    gold = int(input("Enter Gold value:\n>>> "))
-    silver = int(input("Enter Silver value:\n>>> "))
-    copper = int(input("Enter Copper value:\n>>> "))
-    cost = (gold * 100 + silver * 10 + copper)
-
-
-# Texts:
-# Separator
-TILDE = '~ ' * 35
-
-# Welcome message
-MAIN_MENU = f"""{TILDE}
-Welcome to The Shop!
-
-  We are supplying all manner of adventuring goods, please browse
-at your leisure. You can use this enchanted tome to perform a
-variety of functions. Just write down a number or one of the
-following options and the tome will take you to the relevant page."""
-
-# Interaction with the global while loop
-MAIN_MENU_OPTIONS =f"""
-  1. Inventory (View our stock)
-  2. Search (Search for a specific item)
-  3. Basket WIP
-  4. Requests WIP
-  5. Information WIP
-  6. Wallet / Conversion WIP
- {TILDE}"""
-
-# Repeating browsing message
-BROWSING = "\nHere is what we have for sale...\n"
-SEARCH_SUB = f"""\nWhat type of an item are you looking for?
-Select one of the categories:
-  - Swords
-  - Bows
-  - Axes
-or
-  - Exit to go back to the previous page
-{TILDE}"""
-
+from inventory import weapons
+from text_variables import *
+from the_shop_functions import *
 
 # Main menu while loop
-print(MAIN_MENU)
+os.system("cls")
 while True:
+    print(MAIN_MENU)
     print(MAIN_MENU_OPTIONS)
     menu_choice = input(">>> ").lower()
 
     # Allows searching specific items
     while menu_choice == "1" or menu_choice == "inventory":
+        os.system("cls")
         print(SEARCH_SUB)
-        sub_choice = input(">>> ").capitalize()
+        for index, category in enumerate(weapons.keys(), start=1):
+            print(f"  {index}. {category}")
+        print("  0. Exit")
+        print(TILDE)
+        category_choice = input("What type of an item are you looking for?\n>>> ")
         
-        if sub_choice == "Exit":
+        if category_choice == "0":
+            os.system("cls")
             break
-        elif sub_choice not in weapons:
-            print("We don't sell that... Select one of the provided options")
-        elif sub_choice in weapons:
+        try:
+            category_index = int(category_choice) - 1
+            categories = list(weapons.keys())
+            sub_choice = categories[category_index]
             category_name = sub_choice
-            print("\nWe offer:\n")
-            for item in weapons[sub_choice]:
-                print(f"- {item['name']} {sub_choice}")
+            print(f"{TILDE}\nWe offer:\n")
+            for index, item in enumerate(weapons[sub_choice], start=1):
+                print(f"  {index}. {item['name']} {sub_choice}")
             print("\n", TILDE)
-            time.sleep(1)
+            while True:
+                try:
+                    item_choice = int(input("Enter the number of the item for more details (or 0 to go back):\n>>> "))
+                    if item_choice == 0:
+                        break
+                    selected_item = weapons[sub_choice][item_choice - 1]
+                    searching.display_item_stats(selected_item)
+                except (ValueError, IndexError):
+                    print("We don't sell that here... Select one of the provided options.")
+                time.sleep(2)
+        except (ValueError, IndexError):
+            print("We don't sell that here... Select one of the provided options.")
 
 
 

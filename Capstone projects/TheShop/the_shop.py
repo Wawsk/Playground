@@ -30,20 +30,22 @@ while True:
             categories = list(weapons.keys())
             sub_choice = categories[category_index]
             category_name = sub_choice
-            print(f"{TILDE}\nWe offer:\n")
+            print(f"\nWe offer:\n")
             for index, item in enumerate(weapons[sub_choice], start=1):
                 print(f"  {index}. {item['name']} {sub_choice}")
-            print("\n", TILDE)
+            print("  0. Exit")
+            print(TILDE)
             while True:
                 try:
-                    item_choice = int(input("Enter the number of the item for more details (or 0 to go back):\n>>> "))
+                    item_choice = int(input("Enter the number of the item for more details:\n>>> "))
                     if item_choice == 0:
                         break
                     selected_item = weapons[sub_choice][item_choice - 1]
                     searching.display_item_stats(selected_item)
+                    print(input("\nPress Enter to continue..."))
+                    break
                 except (ValueError, IndexError):
                     print("We don't sell that here... Select one of the provided options.")
-                time.sleep(2)
         except (ValueError, IndexError):
             print("We don't sell that here... Select one of the provided options.")
 

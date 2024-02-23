@@ -32,7 +32,7 @@ while True:
             category_name = sub_choice
             print(f"\nWe offer:\n")
             for index, item in enumerate(weapons[sub_choice], start=1):
-                print(f"  {index}. {item['name']} {sub_choice}")
+                print(f"  {index}. {item['material']} {sub_choice}")
             print("  0. Exit")
             print(TILDE)
             while True:

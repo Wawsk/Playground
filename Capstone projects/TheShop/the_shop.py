@@ -1,6 +1,5 @@
 # the_shop.py
 import os
-import time
 from inventory import weapons
 from text_variables import *
 from the_shop_functions import *

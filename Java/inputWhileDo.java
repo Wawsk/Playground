@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class input {
+public class inputWhileDo {
     public static void main(String[] args) {
         
         Scanner input = new Scanner(System.in);

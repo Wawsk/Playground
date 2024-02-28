@@ -1,11 +1,10 @@
 import random
 import player
-import world
 
 class Game:
     def __init__(self):
         self.player = player.Player()
-        self.world = world.World()
+        self.world = World()
 
     def start(self):
         print("Welcome to the Text Adventure Game!")
@@ -58,7 +57,6 @@ class Event:
 
     def trigger(self, player):
         print(self.description)
-        # Implement specific event logic here
 
 
 class World:
@@ -76,7 +74,7 @@ class World:
                 event = random.choice(self.events)
                 event.trigger(player)
                 if isinstance(event, Event) and "enemy" in event.description:
-                    enemy = Enemy("Goblin", 20, 5)  # Example enemy
+                    enemy = Enemy("Goblin", 20, 5)
                     self.battle(player, enemy)
             else:
                 print("You decide to stop exploring.")
@@ -87,7 +85,7 @@ class World:
         while player.is_alive() and enemy.is_alive():
             player.attack(enemy)
             if enemy.is_alive():
-                enemy.attack_player(player)
+                enemy.attack(player)
         if player.is_alive():
             print("You defeated the enemy!")
         else:
@@ -100,7 +98,7 @@ class BossRoom(Event):
 
     def trigger(self, player):
         print(self.description)
-        boss = Boss("Dragon", 100, 20)  # Example boss
+        boss = Boss("Dragon", 100, 20)
         player.attack(boss)
         if boss.is_alive():
             boss.attack_player(player)
@@ -108,5 +106,3 @@ class BossRoom(Event):
             print("Congratulations! You defeated the dragon and won the game!")
         else:
             print("Game over! You were defeated by the dragon.")
-
-

@@ -33,8 +33,8 @@ class Player:
     def is_alive(self):
         return self.health > 0
 
-    def take_damage(self, amount):
-        self.health -= amount
+    def take_damage(self, damage):
+        self.health -= damage
 
     def attack(self, enemy):
         damage = self.attack - enemy.defense
@@ -42,4 +42,3 @@ class Player:
             damage = 0
         enemy.take_damage(damage)
         print(f"You attack the {enemy.name} for {damage} damage!")
-
